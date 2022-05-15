@@ -18,7 +18,7 @@ SCOPES = 'https://www.googleapis.com/auth/drive'
 CLIENT_SECRET_FILE = 'client_secrets.json'
 
 def get_credentials():
-    credential_path = os.path.join("F:/biblograpy/test/", 'login_credentials.json')
+    credential_path = os.path.join("F:/biblograpy/SBI - OCR/", 'login_credentials.json')
     store = Storage(credential_path)
     credentials = store.get()
     if not credentials or credentials.invalid:
@@ -34,11 +34,11 @@ def main():
     http = credentials.authorize(httplib2.Http())
     service = discovery.build('drive', 'v3', http=http)
 
-    pdffile = 'F:/biblograpy/test/pdf_data'
+    pdffile = 'F:/biblograpy/SBI - OCR/pdf_data'
     pdflist = glob.glob(os.path.join(pdffile,'*.pdf'))
     
-    txtfile = 'F:/biblograpy/test/txt_data/sample.txt'
-    imgfiles = 'F:/biblograpy/test/img_data'
+    txtfile = 'F:/biblograpy/SBI - OCR/txt_data/sample.txt'
+    imgfiles = 'F:/biblograpy/SBI - OCR/img_data'
 
     images = convert_from_path(pdflist[0],dpi=500)
     for i in range(len(images)):
@@ -52,7 +52,6 @@ def main():
             file_path = f"{imgfiles}/{file}"
 
             media = MediaFileUpload(file_path, mimetype=mime, resumable=True)
-            #media = MediaFileUpload('./img_data/okok.jpg', mimetype=mime, resumable=True)
             res = service.files().create(
                     body={
                         'name':  file[:-4] + '.doc',
@@ -77,8 +76,8 @@ def main():
 
 
 if __name__ == '__main__':
-    filelist1 = glob.glob(os.path.join('./txt_data','*'))
-    filelist2 = glob.glob(os.path.join('./img_data','*'))
+    filelist1 = glob.glob(os.path.join('F:/biblograpy/SBI - OCR/txt_data/txt_data','*'))
+    filelist2 = glob.glob(os.path.join('F:/biblograpy/SBI - OCR/img_data','*'))
     for f in filelist1+filelist2:
         os.remove(f)
     #data_file = open('./txt_data/sample.txt','r',encoding='utf8').read()
